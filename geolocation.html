@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Location - Session Replay Test</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
+  <script src="js/tracker.js"></script>
+</head>
+<body data-page="geolocation">
+  <header class="top-header">
+    <div class="top-header-left">
+      <a href="index.html" class="header-logo">
+        <div class="header-logo-icon">U</div>
+        <span class="header-logo-text">uzera</span>
+      </a>
+      <div class="header-page-title">
+        <span class="material-icons">security</span>
+        <span>Session Replay Test</span>
+      </div>
+    </div>
+    <div class="top-header-right">
+      <div class="user-profile" onclick="openIdentifyModal()">
+        <div class="user-avatar" id="userAvatarDisplay">TS</div>
+        <span class="user-name" id="userNameDisplay">Test User</span>
+        <span class="material-icons" style="font-size: 18px; color: var(--text-muted);">expand_more</span>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="pii.html">PII</a>
+      <a class="nav-link" href="auth.html">Auth</a>
+      <a class="nav-link" href="financial.html">Financial</a>
+      <a class="nav-link" href="sensitive.html">IDs</a>
+      <a class="nav-link" href="health.html">Health</a>
+      <a class="nav-link" href="inputs.html">Inputs</a>
+      <a class="nav-link" href="ui.html">UI</a>
+      <a class="nav-link" href="network.html">Network</a>
+      <a class="nav-link" href="pages.html">Pages</a>
+      <a class="nav-link" href="clicks.html">Clicks</a>
+      <a class="nav-link" href="custom.html">Custom</a>
+      <a class="nav-link" href="thirdparty.html">3rd Party</a>
+      <a class="nav-link" href="storage.html">Storage</a>
+      <a class="nav-link" href="clipboard.html">Clipboard</a>
+      <a class="nav-link active" href="geolocation.html">Location</a>
+      <a class="nav-link" href="media.html">Media</a>
+      <a class="nav-link" href="autofill.html">Autofill</a>
+      <a class="nav-link" href="urldata.html">URL</a>
+      <a class="nav-link" href="international.html">Intl</a>
+      <a class="nav-link" href="recovery.html">2FA</a>
+      <a class="nav-link" href="graphics.html">Graphics</a>
+      <a class="nav-link" href="errors.html">Errors</a>
+      <a class="nav-link" href="api.html">API</a>
+      <a class="nav-link" href="forms.html">Forms</a>
+    </div>
+  </nav>
+
+  <div class="page">
+    <h1>15. Geolocation</h1>
+    <p class="page-desc"><span class="badge">CRITICAL</span> Live location capture</p>
+
+    <div class="critical-box"><p>Location data reveals home address, work location, and movement patterns.</p></div>
+
+    <div class="card">
+      <h3>Current Location</h3>
+      <button class="btn btn-primary" onclick="getLocation()">Get My Location</button>
+      <div class="location-display mt-1" id="locationDisplay">
+        <div class="text-muted">Location not captured yet</div>
+        <div class="coords" id="coordsDisplay">--.--, --.--</div>
+        <div class="text-sm text-muted" id="accuracyDisplay"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Watch Position</h3>
+      <button class="btn btn-primary btn-sm" onclick="watchLocation()">Start Tracking</button>
+      <button class="btn btn-danger btn-sm" onclick="stopWatching()">Stop</button>
+      <div id="watchDisplay" class="mt-05 code-block" style="max-height: 150px; overflow-y: auto;"></div>
+    </div>
+
+    <div class="card">
+      <h3>IP-Based Location</h3>
+      <button class="btn btn-primary btn-sm" onclick="getIPLocation()">Detect from IP</button>
+      <div id="ipLocationDisplay" class="mt-05" style="display: none;">
+        <div class="storage-item"><span class="storage-key">IP Address</span><span class="storage-value" id="ipAddress">--</span></div>
+        <div class="storage-item"><span class="storage-key">City</span><span class="storage-value" id="ipCity">--</span></div>
+        <div class="storage-item"><span class="storage-key">Country</span><span class="storage-value" id="ipCountry">--</span></div>
+        <div class="storage-item"><span class="storage-key">ISP</span><span class="storage-value" id="ipISP">--</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Timezone & Locale</h3>
+      <div class="storage-item"><span class="storage-key">Timezone</span><span class="storage-value" id="timezone"></span></div>
+      <div class="storage-item"><span class="storage-key">Locale</span><span class="storage-value" id="locale"></span></div>
+      <div class="storage-item"><span class="storage-key">Language</span><span class="storage-value" id="language"></span></div>
+    </div>
+  </div>
+
+  <!-- IDENTIFY MODAL -->
+  <div class="modal-overlay" id="identifyModalOverlay" onclick="closeIdentifyModal(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <h3 style="margin-bottom: var(--spacing-md);">Identify User</h3>
+      <p class="text-sm text-muted" style="margin-bottom: var(--spacing-md);">Enter your email to identify yourself.</p>
+      <form id="identifyForm" onsubmit="handleIdentifySubmit(event)">
+        <div class="form-group">
+          <label for="identifyName">Full Name <span style="color: var(--danger-color);">*</span></label>
+          <input type="text" id="identifyName" placeholder="John Doe" required>
+        </div>
+        <div class="form-group">
+          <label for="identifyEmail">Email Address <span style="color: var(--danger-color);">*</span></label>
+          <input type="email" id="identifyEmail" placeholder="john@example.com" required>
+        </div>
+        <div id="generatedIdPreview" style="display: none; margin-bottom: var(--spacing-md);">
+          <label class="text-sm">Generated User ID:</label>
+          <div class="code-block" id="generatedIdDisplay" style="margin-top: var(--spacing-xs);"></div>
+        </div>
+        <div style="display: flex; gap: var(--spacing-sm); justify-content: flex-end; margin-top: var(--spacing-md);">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="closeIdentifyModalBtn()">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Identify</button>
+        </div>
+      </form>
+      <div id="identifySuccess" style="display: none;">
+        <div class="success-box"><p><strong>Successfully identified!</strong></p></div>
+        <div style="margin-bottom: var(--spacing-md);"><label class="text-sm">User ID:</label><div class="code-block" id="successUserId"></div></div>
+        <div style="margin-bottom: var(--spacing-md);"><label class="text-sm">Name:</label><div class="code-block" id="successName"></div></div>
+        <div style="margin-bottom: var(--spacing-md);"><label class="text-sm">Email:</label><div class="code-block" id="successEmail"></div></div>
+        <button type="button" class="btn btn-primary btn-sm" onclick="closeIdentifyModalBtn()" style="width: 100%;">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API - Session Replay Test</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
+  <script src="js/tracker.js"></script>
+</head>
+<body data-page="api">
+  <header class="top-header">
+    <div class="top-header-left">
+      <a href="index.html" class="header-logo">
+        <div class="header-logo-icon">U</div>
+        <span class="header-logo-text">uzera</span>
+      </a>
+      <div class="header-page-title">
+        <span class="material-icons">security</span>
+        <span>Session Replay Test</span>
+      </div>
+    </div>
+    <div class="top-header-right">
+      <div class="user-profile" onclick="openIdentifyModal()">
+        <div class="user-avatar" id="userAvatarDisplay">TS</div>
+        <span class="user-name" id="userNameDisplay">Test User</span>
+        <span class="material-icons" style="font-size: 18px; color: var(--text-muted);">expand_more</span>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="pii.html">PII</a>
+      <a class="nav-link" href="auth.html">Auth</a>
+      <a class="nav-link" href="financial.html">Financial</a>
+      <a class="nav-link" href="sensitive.html">IDs</a>
+      <a class="nav-link" href="health.html">Health</a>
+      <a class="nav-link" href="inputs.html">Inputs</a>
+      <a class="nav-link" href="ui.html">UI</a>
+      <a class="nav-link" href="network.html">Network</a>
+      <a class="nav-link" href="pages.html">Pages</a>
+      <a class="nav-link" href="clicks.html">Clicks</a>
+      <a class="nav-link" href="custom.html">Custom</a>
+      <a class="nav-link" href="thirdparty.html">3rd Party</a>
+      <a class="nav-link" href="storage.html">Storage</a>
+      <a class="nav-link" href="clipboard.html">Clipboard</a>
+      <a class="nav-link" href="geolocation.html">Location</a>
+      <a class="nav-link" href="media.html">Media</a>
+      <a class="nav-link" href="autofill.html">Autofill</a>
+      <a class="nav-link" href="urldata.html">URL</a>
+      <a class="nav-link" href="international.html">Intl</a>
+      <a class="nav-link" href="recovery.html">2FA</a>
+      <a class="nav-link" href="graphics.html">Graphics</a>
+      <a class="nav-link" href="errors.html">Errors</a>
+      <a class="nav-link active" href="api.html">API</a>
+      <a class="nav-link" href="forms.html">Forms</a>
+    </div>
+  </nav>
+
+  <div class="page">
+    <h1>API Testing</h1>
+    <p class="page-desc"><span class="badge-info">TESTING</span> API calls, error tracking, and performance monitoring</p>
+
+    <div class="info-box"><p>Test various API scenarios including successful calls, errors, and performance metrics. Results are logged below each section.</p></div>
+
+    <div class="card">
+      <h3>Simulate API Calls</h3>
+      <p class="text-sm text-muted" style="margin-bottom: var(--spacing-md);">Test API response masking</p>
+      <div class="flex gap-05" style="flex-wrap: wrap;">
+        <button class="btn btn-primary btn-sm" onclick="simulateAPICall('/api/user')">GET User (with PII)</button>
+        <button class="btn btn-primary btn-sm" onclick="simulateAPICall('/api/payment')">GET Payment (with card)</button>
+        <button class="btn btn-primary btn-sm" onclick="simulateAPICall('/api/auth')">GET Auth (with token)</button>
+      </div>
+      <p class="text-sm text-muted" style="margin: var(--spacing-md) 0 var(--spacing-sm);">Test failed API endpoints (by status code)</p>
+      <div class="flex gap-05" style="flex-wrap: wrap;">
+        <button class="btn btn-danger btn-sm" onclick="triggerStatusError(401)">401 Unauthorized</button>
+        <button class="btn btn-danger btn-sm" onclick="triggerStatusError(403)">403 Forbidden</button>
+        <button class="btn btn-danger btn-sm" onclick="triggerStatusError(404)">404 Not Found</button>
+        <button class="btn btn-danger btn-sm" onclick="triggerStatusError(500)">500 Server Error</button>
+        <button class="btn btn-danger btn-sm" onclick="triggerStatusError(502)">502 Bad Gateway</button>
+        <button class="btn btn-danger btn-sm" onclick="triggerStatusError(503)">503 Unavailable</button>
+      </div>
+      <p class="text-sm text-muted" style="margin: var(--spacing-md) 0 var(--spacing-sm);">Test other error types</p>
+      <div class="flex gap-05" style="flex-wrap: wrap;">
+        <button class="btn btn-danger btn-sm" onclick="triggerNetworkError()">Network Error</button>
+        <button class="btn btn-danger btn-sm" onclick="triggerTimeoutError()">Timeout Error</button>
+        <button class="btn btn-danger btn-sm" onclick="triggerCORSError()">CORS Error</button>
+      </div>
+      <p class="text-sm text-muted" style="margin: var(--spacing-md) 0 var(--spacing-sm);">Test JavaScript & Resource errors</p>
+      <div class="flex gap-05" style="flex-wrap: wrap;">
+        <button class="btn btn-danger btn-sm" onclick="triggerJSError()">JS ReferenceError</button>
+        <button class="btn btn-danger btn-sm" onclick="triggerJSTypeError()">JS TypeError</button>
+        <button class="btn btn-danger btn-sm" onclick="triggerJSSyntaxError()">JS SyntaxError</button>
+        <button class="btn btn-danger btn-sm" onclick="triggerUnhandledRejection()">Unhandled Promise</button>
+        <button class="btn btn-danger btn-sm" onclick="triggerImageError()">Image Load Error</button>
+        <button class="btn btn-danger btn-sm" onclick="triggerScriptError()">Script Load Error</button>
+      </div>
+      <div id="apiResponseDisplay" class="code-block mt-05" style="max-height: 150px; overflow-y: auto; display: none;"></div>
+    </div>
+
+    <div class="card">
+      <h3>API Calls - Success</h3>
+      <p class="text-sm text-muted" style="margin-bottom: var(--spacing-md);">Make successful API requests to public endpoints</p>
+      <div class="flex gap-05" style="flex-wrap: wrap;">
+        <button class="btn btn-primary btn-sm" onclick="apiGetUsers()">GET Users</button>
+        <button class="btn btn-primary btn-sm" onclick="apiGetPosts()">GET Posts</button>
+      </div>
+      <div id="apiSuccessLog" class="code-block mt-05" style="max-height: 150px; overflow-y: auto;">Waiting for API call...</div>
+    </div>
+
+    <div class="card">
+      <h3>Error Breakdown</h3>
+      <p class="text-sm text-muted" style="margin-bottom: var(--spacing-md);">Track error counts by type during this session</p>
+      <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+          <thead>
+            <tr style="background: var(--bg-tertiary); text-align: left;">
+              <th style="padding: 0.75rem 1rem; font-weight: 600;">Error Type</th>
+              <th style="padding: 0.75rem 1rem; font-weight: 600; text-align: center;">Count</th>
+              <th style="padding: 0.75rem 1rem; font-weight: 600;">Severity</th>
+              <th style="padding: 0.75rem 1rem; font-weight: 600; text-align: center;">Trend</th>
+            </tr>
+          </thead>
+          <tbody id="errorBreakdownBody">
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 0.75rem 1rem;">JavaScript Errors</td>
+              <td style="padding: 0.75rem 1rem; text-align: center;" id="jsErrorCount">0</td>
+              <td style="padding: 0.75rem 1rem;"><span class="badge">High</span></td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--text-muted);">Stable</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 0.75rem 1rem;">Network Errors</td>
+              <td style="padding: 0.75rem 1rem; text-align: center;" id="networkErrorCount">0</td>
+              <td style="padding: 0.75rem 1rem;"><span class="badge-warn">Medium</span></td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--text-muted);">Stable</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 0.75rem 1rem;">Server Errors (5xx)</td>
+              <td style="padding: 0.75rem 1rem; text-align: center;" id="serverErrorCount">0</td>
+              <td style="padding: 0.75rem 1rem;"><span class="badge">High</span></td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--text-muted);">Stable</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 0.75rem 1rem;">Client Errors (4xx)</td>
+              <td style="padding: 0.75rem 1rem; text-align: center;" id="clientErrorCount">0</td>
+              <td style="padding: 0.75rem 1rem;"><span class="badge-warn">Medium</span></td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--text-muted);">Stable</td>
+            </tr>
+            <tr>
+              <td style="padding: 0.75rem 1rem;">Resource Loading</td>
+              <td style="padding: 0.75rem 1rem; text-align: center;" id="resourceErrorCount">0</td>
+              <td style="padding: 0.75rem 1rem;"><span class="badge-success">Low</span></td>
+              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--text-muted);">Stable</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <button class="btn btn-secondary btn-sm mt-05" onclick="resetErrorCounts()">Reset Counts</button>
+    </div>
+
+    <div class="card">
+      <h3>Custom API Request</h3>
+      <p class="text-sm text-muted" style="margin-bottom: var(--spacing-md);">Make a custom API request</p>
+      <div class="form-group">
+        <label>Method</label>
+        <select id="customApiMethod" style="width: auto; display: inline-block; margin-right: var(--spacing-sm);">
+          <option value="GET">GET</option>
+          <option value="POST">POST</option>
+          <option value="PUT">PUT</option>
+          <option value="DELETE">DELETE</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>URL</label>
+        <input type="text" id="customApiUrl" placeholder="https://jsonplaceholder.typicode.com/posts/1" value="https://jsonplaceholder.typicode.com/posts/1">
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="customApiRequest()">Send Request</button>
+      <div id="customApiLog" class="code-block mt-05" style="max-height: 200px; overflow-y: auto;">Response will appear here...</div>
+    </div>
+  </div>
+
+  <!-- IDENTIFY MODAL -->
+  <div class="modal-overlay" id="identifyModalOverlay" onclick="closeIdentifyModal(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <h3 style="margin-bottom: var(--spacing-md);">Identify User</h3>
+      <p class="text-sm text-muted" style="margin-bottom: var(--spacing-md);">Enter your email to identify yourself.</p>
+      <form id="identifyForm" onsubmit="handleIdentifySubmit(event)">
+        <div class="form-group">
+          <label for="identifyName">Full Name <span style="color: var(--danger-color);">*</span></label>
+          <input type="text" id="identifyName" placeholder="John Doe" required>
+        </div>
+        <div class="form-group">
+          <label for="identifyEmail">Email Address <span style="color: var(--danger-color);">*</span></label>
+          <input type="email" id="identifyEmail" placeholder="john@example.com" required>
+        </div>
+        <div id="generatedIdPreview" style="display: none; margin-bottom: var(--spacing-md);">
+          <label class="text-sm">Generated User ID:</label>
+          <div class="code-block" id="generatedIdDisplay" style="margin-top: var(--spacing-xs);"></div>
+        </div>
+        <div style="display: flex; gap: var(--spacing-sm); justify-content: flex-end; margin-top: var(--spacing-md);">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="closeIdentifyModalBtn()">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Identify</button>
+        </div>
+      </form>
+      <div id="identifySuccess" style="display: none;">
+        <div class="success-box"><p><strong>Successfully identified!</strong></p></div>
+        <div style="margin-bottom: var(--spacing-md);"><label class="text-sm">User ID:</label><div class="code-block" id="successUserId"></div></div>
+        <div style="margin-bottom: var(--spacing-md);"><label class="text-sm">Name:</label><div class="code-block" id="successName"></div></div>
+        <div style="margin-bottom: var(--spacing-md);"><label class="text-sm">Email:</label><div class="code-block" id="successEmail"></div></div>
+        <button type="button" class="btn btn-primary btn-sm" onclick="closeIdentifyModalBtn()" style="width: 100%;">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+  <script src="js/main.js"></script>
+  <script>
+    // Load error counts from localStorage (persists across pages)
+    function loadErrorCounts() {
+      const stored = localStorage.getItem('errorCounts');
+      if (stored) {
+        return JSON.parse(stored);
+      }
+      return {
+        jsErrors: 0,
+        networkErrors: 0,
+        serverErrors: 0,
+        clientErrors: 0,
+        resourceErrors: 0
+      };
+    }
+
+    // Save error counts to localStorage
+    function saveErrorCounts() {
+      localStorage.setItem('errorCounts', JSON.stringify(errorCounts));
+    }
+
+    // Initialize error counts from localStorage
+    const errorCounts = loadErrorCounts();
+
+    // Update error count display
+    function updateErrorDisplay() {
+      document.getElementById('jsErrorCount').textContent = errorCounts.jsErrors;
+      document.getElementById('networkErrorCount').textContent = errorCounts.networkErrors;
+      document.getElementById('serverErrorCount').textContent = errorCounts.serverErrors;
+      document.getElementById('clientErrorCount').textContent = errorCounts.clientErrors;
+      document.getElementById('resourceErrorCount').textContent = errorCounts.resourceErrors;
+    }
+
+    // Reset error counts
+    function resetErrorCounts() {
+      errorCounts.jsErrors = 0;
+      errorCounts.networkErrors = 0;
+      errorCounts.serverErrors = 0;
+      errorCounts.clientErrors = 0;
+      errorCounts.resourceErrors = 0;
+      saveErrorCounts();
+      updateErrorDisplay();
+      showToast('Error counts reset', 'success');
+    }
+
+    // Increment error count based on type
+    function trackError(type, statusCode = null) {
+      if (statusCode) {
+        if (statusCode >= 500) {
+          errorCounts.serverErrors++;
+        } else if (statusCode >= 400) {
+          errorCounts.clientErrors++;
+        }
+      } else {
+        switch(type) {
+          case 'js': errorCounts.jsErrors++; break;
+          case 'network': errorCounts.networkErrors++; break;
+          case 'resource': errorCounts.resourceErrors++; break;
+        }
+      }
+      saveErrorCounts();
+      updateErrorDisplay();
+    }
+
+    // Update display on page load
+    updateErrorDisplay();
+
+    // Simulate API call with sensitive data responses
+    async function simulateAPICall(endpoint) {
+      const display = document.getElementById('apiResponseDisplay');
+      display.style.display = 'block';
+      display.textContent = 'Loading...';
+      display.style.color = '';
+
+      // Mock API responses with sensitive data
+      const mockResponses = {
+        '/api/user': {
+          id: 123,
+          email: 'john@email.com',
+          ssn: '123-45-6789',
+          name: 'John Doe',
+          phone: '+1-555-123-4567',
+          address: '123 Main St, New York, NY 10001'
+        },
+        '/api/payment': {
+          transaction_id: 'txn_abc123',
+          card_number: '4111-1111-1111-1234',
+          card_cvv: '123',
+          card_expiry: '12/25',
+          amount: 299.99,
+          billing_address: '456 Oak Ave, Los Angeles, CA 90001'
+        },
+        '/api/auth': {
+          user_id: 'usr_789xyz',
+          access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozjgNryP4J3jVmNHl0w5N_XgL0n3I9PlFUP0THsR8U',
+          refresh_token: 'rt_secret_refresh_token_abc123',
+          api_key: 'sk_live_abc123xyz789',
+          session_id: 'sess_secret123'
+        }
+      };
+
+      // Make a real API call to demonstrate network activity
+      const url = `https://jsonplaceholder.typicode.com/users/1`;
+
+      try {
+        const res = await fetch(url);
+        await res.json(); // consume the response
+
+        // Return our mock sensitive data
+        const responseData = mockResponses[endpoint] || { error: 'Unknown endpoint' };
+        display.style.color = 'var(--danger-color)';
+        display.textContent = JSON.stringify(responseData, null, 2);
+        showToast(`API Response: ${endpoint}`, 'success');
+      } catch(e) {
+        display.style.color = 'var(--danger-color)';
+        display.textContent = JSON.stringify({ error: e.message }, null, 2);
+        showToast('API Error', 'error');
+      }
+    }
+
+    // Status code error definitions
+    const statusErrors = {
+      401: { error: 'Unauthorized', message: 'Authentication required. Please log in.' },
+      403: { error: 'Forbidden', message: 'You do not have permission to access this resource.' },
+      404: { error: 'Not Found', message: 'The requested resource could not be found.' },
+      500: { error: 'Internal Server Error', message: 'The server encountered an unexpected condition.' },
+      502: { error: 'Bad Gateway', message: 'Invalid response from upstream server.' },
+      503: { error: 'Service Unavailable', message: 'The server is temporarily unavailable.' }
+    };
+
+    // Trigger specific status code error with real API call
+    async function triggerStatusError(statusCode) {
+      const display = document.getElementById('apiResponseDisplay');
+      display.style.display = 'block';
+      display.textContent = 'Loading...';
+      display.style.color = '';
+
+      const url = `https://httpstat.us/${statusCode}`;
+
+      try {
+        const res = await fetch(url, {
+          headers: { 'Accept': 'application/json' }
+        });
+
+        const errorInfo = statusErrors[statusCode] || { error: 'Unknown Error', message: 'An error occurred' };
+        const errorData = {
+          status: res.status,
+          statusText: res.statusText,
+          error: errorInfo.error,
+          message: errorInfo.message,
+          url: url,
+          timestamp: new Date().toISOString()
+        };
+
+        display.style.color = 'var(--danger-color)';
+        display.textContent = JSON.stringify(errorData, null, 2);
+        trackError(null, statusCode);
+        showToast(`API Error: ${statusCode} ${errorInfo.error}`, 'error');
+      } catch(e) {
+        const errorData = {
+          status: statusCode,
+          error: 'Request Failed',
+          message: e.message,
+          url: url,
+          timestamp: new Date().toISOString()
+        };
+        display.style.color = 'var(--danger-color)';
+        display.textContent = JSON.stringify(errorData, null, 2);
+        trackError(null, statusCode);
+        showToast(`API Error: ${statusCode}`, 'error');
+      }
+    }
+
+    // Trigger network error with real failed request
+    async function triggerNetworkError() {
+      const display = document.getElementById('apiResponseDisplay');
+      display.style.display = 'block';
+      display.textContent = 'Loading...';
+      display.style.color = '';
+
+      const url = 'https://localhost:99999/api/unreachable';
+
+      try {
+        await fetch(url);
+      } catch(e) {
+        const errorData = {
+          type: 'NetworkError',
+          message: e.message,
+          url: url,
+          timestamp: new Date().toISOString()
+        };
+
+        display.style.color = 'var(--danger-color)';
+        display.textContent = JSON.stringify(errorData, null, 2);
+        trackError('network');
+        showToast('Network Error: ' + e.message, 'error');
+      }
+    }
+
+    // Trigger timeout error with AbortController
+    async function triggerTimeoutError() {
+      const display = document.getElementById('apiResponseDisplay');
+      display.style.display = 'block';
+      display.textContent = 'Loading... (will timeout in 2s)';
+      display.style.color = '';
+
+      const url = 'https://httpstat.us/200?sleep=10000';
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 2000);
+
+      try {
+        await fetch(url, { signal: controller.signal });
+        clearTimeout(timeoutId);
+      } catch(e) {
+        clearTimeout(timeoutId);
+        const errorData = {
+          type: 'TimeoutError',
+          message: e.name === 'AbortError' ? 'Request timed out after 2000ms' : e.message,
+          url: url,
+          timestamp: new Date().toISOString()
+        };
+
+        display.style.color = 'var(--danger-color)';
+        display.textContent = JSON.stringify(errorData, null, 2);
+        trackError('network');
+        showToast('Timeout Error: Request aborted', 'error');
+      }
+    }
+
+    // Trigger CORS error with real cross-origin request
+    async function triggerCORSError() {
+      const display = document.getElementById('apiResponseDisplay');
+      display.style.display = 'block';
+      display.textContent = 'Loading...';
+      display.style.color = '';
+
+      const url = 'https://www.google.com/api/test';
+
+      try {
+        await fetch(url, { mode: 'cors' });
+      } catch(e) {
+        const errorData = {
+          type: 'CORSError',
+          message: e.message || 'Blocked by CORS policy',
+          url: url,
+          timestamp: new Date().toISOString()
+        };
+
+        display.style.color = 'var(--danger-color)';
+        display.textContent = JSON.stringify(errorData, null, 2);
+        trackError('network');
+        showToast('CORS Error: Blocked by policy', 'error');
+      }
+    }
+
+    // Trigger JS ReferenceError
+    function triggerJSError() {
+      const display = document.getElementById('apiResponseDisplay');
+      display.style.display = 'block';
+      display.style.color = 'var(--danger-color)';
+
+      // Make an API call first to log the action
+      fetch('https://jsonplaceholder.typicode.com/posts/1')
+        .then(() => {
+          // Now trigger the actual ReferenceError
+          try {
+            undefinedVariable.someMethod(); // This will throw ReferenceError
+          } catch(e) {
+            const errorData = {
+              type: 'ReferenceError',
+              message: e.message,
+              stack: e.stack ? e.stack.split('\n').slice(0, 3).join('\n') : 'N/A',
+              timestamp: new Date().toISOString()
+            };
+            display.textContent = JSON.stringify(errorData, null, 2);
+            trackError('js');
+            showToast('JS ReferenceError triggered', 'error');
+            // Re-throw to trigger global error handler
+            throw e;
+          }
+        });
+    }
+
+    // Trigger JS TypeError
+    function triggerJSTypeError() {
+      const display = document.getElementById('apiResponseDisplay');
+      display.style.display = 'block';
+      display.style.color = 'var(--danger-color)';
+
+      fetch('https://jsonplaceholder.typicode.com/posts/1')
+        .then(() => {
+          try {
+            const obj = null;
+            obj.someMethod(); // This will throw TypeError
+          } catch(e) {
+            const errorData = {
+              type: 'TypeError',
+              message: e.message,
+              stack: e.stack ? e.stack.split('\n').slice(0, 3).join('\n') : 'N/A',
+              timestamp: new Date().toISOString()
+            };
+            display.textContent = JSON.stringify(errorData, null, 2);
+            trackError('js');
+            showToast('JS TypeError triggered', 'error');
+            throw e;
+          }
+        });
+    }
+
+    // Trigger JS SyntaxError (via eval)
+    function triggerJSSyntaxError() {
+      const display = document.getElementById('apiResponseDisplay');
+      display.style.display = 'block';
+      display.style.color = 'var(--danger-color)';
+
+      fetch('https://jsonplaceholder.typicode.com/posts/1')
+        .then(() => {
+          try {
+            eval('function { invalid syntax }'); // This will throw SyntaxError
+          } catch(e) {
+            const errorData = {
+              type: 'SyntaxError',
+              message: e.message,
+              stack: e.stack ? e.stack.split('\n').slice(0, 3).join('\n') : 'N/A',
+              timestamp: new Date().toISOString()
+            };
+            display.textContent = JSON.stringify(errorData, null, 2);
+            trackError('js');
+            showToast('JS SyntaxError triggered', 'error');
+            throw e;
+          }
+        });
+    }
+
+    // Trigger Unhandled Promise Rejection
+    function triggerUnhandledRejection() {
+      const display = document.getElementById('apiResponseDisplay');
+      display.style.display = 'block';
+      display.style.color = 'var(--danger-color)';
+
+      // Make an API call first
+      fetch('https://jsonplaceholder.typicode.com/posts/1')
+        .then(() => {
+          // Create an unhandled promise rejection
+          const errorData = {
+            type: 'UnhandledPromiseRejection',
+            message: 'Promise rejected without catch handler',
+            reason: 'Simulated async operation failure',
+            timestamp: new Date().toISOString()
+          };
+          display.textContent = JSON.stringify(errorData, null, 2);
+          trackError('js');
+          showToast('Unhandled Promise Rejection triggered', 'error');
+
+          // Create actual unhandled rejection
+          Promise.reject(new Error('Unhandled Promise Rejection: Async operation failed'));
+        });
+    }
+
+    // Trigger Image Load Error
+    function triggerImageError() {
+      const display = document.getElementById('apiResponseDisplay');
+      display.style.display = 'block';
+      display.style.color = 'var(--danger-color)';
+
+      // Make an API call first
+      fetch('https://jsonplaceholder.typicode.com/posts/1')
+        .then(() => {
+          // Create a broken image to trigger resource loading error
+          const img = new Image();
+          img.onerror = function() {
+            const errorData = {
+              type: 'ResourceLoadError',
+              resourceType: 'Image',
+              src: this.src,
+              message: 'Failed to load image resource',
+              timestamp: new Date().toISOString()
+            };
+            display.textContent = JSON.stringify(errorData, null, 2);
+            trackError('resource');
+            showToast('Image Load Error triggered', 'error');
+          };
+          // Use a non-existent image URL
+          img.src = 'https://example.com/non-existent-image-' + Date.now() + '.png';
+        });
+    }
+
+    // Trigger Script Load Error
+    function triggerScriptError() {
+      const display = document.getElementById('apiResponseDisplay');
+      display.style.display = 'block';
+      display.style.color = 'var(--danger-color)';
+
+      // Make an API call first
+      fetch('https://jsonplaceholder.typicode.com/posts/1')
+        .then(() => {
+          // Create a broken script to trigger resource loading error
+          const script = document.createElement('script');
+          script.onerror = function() {
+            const errorData = {
+              type: 'ResourceLoadError',
+              resourceType: 'Script',
+              src: this.src,
+              message: 'Failed to load script resource',
+              timestamp: new Date().toISOString()
+            };
+            display.textContent = JSON.stringify(errorData, null, 2);
+            trackError('resource');
+            showToast('Script Load Error triggered', 'error');
+            // Remove the failed script element
+            this.remove();
+          };
+          // Use a non-existent script URL
+          script.src = 'https://example.com/non-existent-script-' + Date.now() + '.js';
+          document.head.appendChild(script);
+        });
+    }
+
+    // API functions specific to this page
+    async function apiGetUsers() {
+      const log = document.getElementById('apiSuccessLog');
+      log.textContent = 'Loading...';
+      try {
+        const res = await fetch('https://jsonplaceholder.typicode.com/users?_limit=3');
+        const data = await res.json();
+        log.textContent = JSON.stringify(data, null, 2);
+        showToast('Users loaded', 'success');
+      } catch(e) {
+        log.textContent = 'Error: ' + e.message;
+        showToast('API Error', 'error');
+      }
+    }
+
+    async function apiGetPosts() {
+      const log = document.getElementById('apiSuccessLog');
+      log.textContent = 'Loading...';
+      try {
+        const res = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=3');
+        const data = await res.json();
+        log.textContent = JSON.stringify(data, null, 2);
+        showToast('Posts loaded', 'success');
+      } catch(e) {
+        log.textContent = 'Error: ' + e.message;
+        showToast('API Error', 'error');
+      }
+    }
+
+    async function customApiRequest() {
+      const method = document.getElementById('customApiMethod').value;
+      const url = document.getElementById('customApiUrl').value;
+      const log = document.getElementById('customApiLog');
+      log.textContent = 'Loading...';
+      try {
+        const res = await fetch(url, { method });
+        const data = await res.json();
+        log.textContent = JSON.stringify(data, null, 2);
+        showToast('Request successful', 'success');
+      } catch(e) {
+        log.textContent = 'Error: ' + e.message;
+        showToast('Request failed', 'error');
+      }
+    }
+  </script>
+</body>
+</html>

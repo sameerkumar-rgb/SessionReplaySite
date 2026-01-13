@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Session Replay Masking Test Suite - Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
+  <script src="js/tracker.js"></script>
+</head>
+<body data-page="home">
+  <!-- Top Header Bar -->
+  <header class="top-header">
+    <div class="top-header-left">
+      <a href="index.html" class="header-logo">
+        <div class="header-logo-icon">U</div>
+        <span class="header-logo-text">uzera</span>
+      </a>
+      <div class="header-page-title">
+        <span class="material-icons">security</span>
+        <span>Session Replay Test</span>
+      </div>
+    </div>
+    <div class="top-header-right">
+      <div class="user-profile" onclick="openIdentifyModal()">
+        <div class="user-avatar" id="userAvatarDisplay">TS</div>
+        <span class="user-name" id="userNameDisplay">Test User</span>
+        <span class="material-icons" style="font-size: 18px; color: var(--text-muted);">expand_more</span>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <div class="nav-links">
+      <a class="nav-link active" href="index.html">Home</a>
+      <a class="nav-link" href="pii.html">PII</a>
+      <a class="nav-link" href="auth.html">Auth</a>
+      <a class="nav-link" href="financial.html">Financial</a>
+      <a class="nav-link" href="sensitive.html">IDs</a>
+      <a class="nav-link" href="health.html">Health</a>
+      <a class="nav-link" href="inputs.html">Inputs</a>
+      <a class="nav-link" href="ui.html">UI</a>
+      <a class="nav-link" href="network.html">Network</a>
+      <a class="nav-link" href="pages.html">Pages</a>
+      <a class="nav-link" href="clicks.html">Clicks</a>
+      <a class="nav-link" href="custom.html">Custom</a>
+      <a class="nav-link" href="thirdparty.html">3rd Party</a>
+      <a class="nav-link" href="storage.html">Storage</a>
+      <a class="nav-link" href="clipboard.html">Clipboard</a>
+      <a class="nav-link" href="geolocation.html">Location</a>
+      <a class="nav-link" href="media.html">Media</a>
+      <a class="nav-link" href="autofill.html">Autofill</a>
+      <a class="nav-link" href="urldata.html">URL</a>
+      <a class="nav-link" href="international.html">Intl</a>
+      <a class="nav-link" href="recovery.html">2FA</a>
+      <a class="nav-link" href="graphics.html">Graphics</a>
+      <a class="nav-link" href="errors.html">Errors</a>
+      <a class="nav-link" href="api.html">API</a>
+      <a class="nav-link" href="forms.html">Forms</a>
+    </div>
+  </nav>
+
+  <!-- HOME PAGE -->
+  <div class="page">
+    <h1>Session Replay Masking Test Suite</h1>
+    <p class="page-desc">Complete testing scenarios for session replay masking compliance (22 test categories)</p>
+
+    <div class="critical-box">
+      <p><strong>IMPORTANT:</strong> All red-bordered fields contain sensitive data that MUST be masked in session replays.</p>
+    </div>
+
+    <div class="card">
+      <h3>Complete Masking Checklist (21 Categories)</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.5rem; font-size: 0.7rem;">
+        <div><span class="badge">CRITICAL</span> PII Data</div>
+        <div><span class="badge">CRITICAL</span> Auth & Security</div>
+        <div><span class="badge">CRITICAL</span> Financial/PCI</div>
+        <div><span class="badge">CRITICAL</span> Government IDs</div>
+        <div><span class="badge">CRITICAL</span> Health/HIPAA</div>
+        <div><span class="badge-warn">MASK</span> Form Inputs</div>
+        <div><span class="badge-warn">MASK</span> UI Content</div>
+        <div><span class="badge-warn">MASK</span> Network Data</div>
+        <div><span class="badge-info">RECOMMEND</span> Full Pages</div>
+        <div><span class="badge-success">ALLOW</span> Interactions</div>
+        <div><span class="badge-info">ADVANCED</span> Custom Rules</div>
+        <div><span class="badge-warn">MASK</span> 3rd Party</div>
+        <div><span class="badge">CRITICAL</span> Browser Storage</div>
+        <div><span class="badge-warn">MASK</span> Clipboard</div>
+        <div><span class="badge">CRITICAL</span> Geolocation</div>
+        <div><span class="badge-warn">MASK</span> Media Input</div>
+        <div><span class="badge">CRITICAL</span> Autofill Data</div>
+        <div><span class="badge-warn">MASK</span> URL Data</div>
+        <div><span class="badge-warn">MASK</span> International</div>
+        <div><span class="badge">CRITICAL</span> Recovery Codes</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Quick Test Actions</h3>
+      <div class="flex gap-05" style="flex-wrap: wrap;">
+        <button class="btn btn-primary btn-sm" onclick="showToast('Welcome john.doe@email.com!', 'success')">Toast with PII</button>
+        <button class="btn btn-primary btn-sm" onclick="openUserModal()">Modal with PII</button>
+        <button class="btn btn-primary btn-sm" onclick="testStorage()">Test Storage</button>
+        <button class="btn btn-primary btn-sm" onclick="getLocation()">Get Location</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <h3>User Profile</h3>
+      <div data-private="true">
+        <div style="margin-bottom: 0.75rem;">
+          <strong>John Doe</strong><br>
+          <span class="text-sm text-muted">john@email.com | +1-555-1234</span>
+        </div>
+        <div class="text-sm">SSN: ***-**-6789</div>
+      </div>
+      <button class="btn btn-primary btn-sm mt-1" onclick="closeModalBtn()">Close</button>
+    </div>
+  </div>
+
+  <!-- IDENTIFY MODAL -->
+  <div class="modal-overlay" id="identifyModalOverlay" onclick="closeIdentifyModal(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <h3 style="margin-bottom: var(--spacing-md);">Identify User</h3>
+      <p class="text-sm text-muted" style="margin-bottom: var(--spacing-md);">Enter your email to identify yourself. A unique ID will be generated based on your email.</p>
+      <form id="identifyForm" onsubmit="handleIdentifySubmit(event)">
+        <div class="form-group">
+          <label for="identifyName">Full Name <span style="color: var(--danger-color);">*</span></label>
+          <input type="text" id="identifyName" placeholder="John Doe" required>
+        </div>
+        <div class="form-group">
+          <label for="identifyEmail">Email Address <span style="color: var(--danger-color);">*</span></label>
+          <input type="email" id="identifyEmail" placeholder="john@example.com" required>
+        </div>
+        <div id="generatedIdPreview" style="display: none; margin-bottom: var(--spacing-md);">
+          <label class="text-sm">Generated User ID:</label>
+          <div class="code-block" id="generatedIdDisplay" style="margin-top: var(--spacing-xs);"></div>
+        </div>
+        <div style="display: flex; gap: var(--spacing-sm); justify-content: flex-end; margin-top: var(--spacing-md);">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="closeIdentifyModalBtn()">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Identify</button>
+        </div>
+      </form>
+      <div id="identifySuccess" style="display: none;">
+        <div class="success-box">
+          <p><strong>Successfully identified!</strong></p>
+        </div>
+        <div style="margin-bottom: var(--spacing-md);">
+          <label class="text-sm">User ID:</label>
+          <div class="code-block" id="successUserId"></div>
+        </div>
+        <div style="margin-bottom: var(--spacing-md);">
+          <label class="text-sm">Name:</label>
+          <div class="code-block" id="successName"></div>
+        </div>
+        <div style="margin-bottom: var(--spacing-md);">
+          <label class="text-sm">Email:</label>
+          <div class="code-block" id="successEmail"></div>
+        </div>
+        <button type="button" class="btn btn-primary btn-sm" onclick="closeIdentifyModalBtn()" style="width: 100%;">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

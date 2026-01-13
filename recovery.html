@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2FA - Session Replay Test</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
+  <script src="js/tracker.js"></script>
+</head>
+<body data-page="recovery">
+  <header class="top-header">
+    <div class="top-header-left">
+      <a href="index.html" class="header-logo">
+        <div class="header-logo-icon">U</div>
+        <span class="header-logo-text">uzera</span>
+      </a>
+      <div class="header-page-title">
+        <span class="material-icons">security</span>
+        <span>Session Replay Test</span>
+      </div>
+    </div>
+    <div class="top-header-right">
+      <div class="user-profile" onclick="openIdentifyModal()">
+        <div class="user-avatar" id="userAvatarDisplay">TS</div>
+        <span class="user-name" id="userNameDisplay">Test User</span>
+        <span class="material-icons" style="font-size: 18px; color: var(--text-muted);">expand_more</span>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="pii.html">PII</a>
+      <a class="nav-link" href="auth.html">Auth</a>
+      <a class="nav-link" href="financial.html">Financial</a>
+      <a class="nav-link" href="sensitive.html">IDs</a>
+      <a class="nav-link" href="health.html">Health</a>
+      <a class="nav-link" href="inputs.html">Inputs</a>
+      <a class="nav-link" href="ui.html">UI</a>
+      <a class="nav-link" href="network.html">Network</a>
+      <a class="nav-link" href="pages.html">Pages</a>
+      <a class="nav-link" href="clicks.html">Clicks</a>
+      <a class="nav-link" href="custom.html">Custom</a>
+      <a class="nav-link" href="thirdparty.html">3rd Party</a>
+      <a class="nav-link" href="storage.html">Storage</a>
+      <a class="nav-link" href="clipboard.html">Clipboard</a>
+      <a class="nav-link" href="geolocation.html">Location</a>
+      <a class="nav-link" href="media.html">Media</a>
+      <a class="nav-link" href="autofill.html">Autofill</a>
+      <a class="nav-link" href="urldata.html">URL</a>
+      <a class="nav-link" href="international.html">Intl</a>
+      <a class="nav-link active" href="recovery.html">2FA</a>
+      <a class="nav-link" href="graphics.html">Graphics</a>
+      <a class="nav-link" href="errors.html">Errors</a>
+      <a class="nav-link" href="api.html">API</a>
+      <a class="nav-link" href="forms.html">Forms</a>
+    </div>
+  </nav>
+
+  <div class="page">
+    <h1>20. 2FA & Recovery Codes</h1>
+    <p class="page-desc"><span class="badge">CRITICAL</span> Backup codes, QR codes, seeds</p>
+
+    <div class="critical-box"><p>Recovery codes and authenticator secrets provide account access. NEVER capture in replays.</p></div>
+
+    <div class="card">
+      <h3>Backup Recovery Codes</h3>
+      <p class="text-sm text-muted" style="margin-bottom: 0.75rem;">Save these codes securely. Each can only be used once:</p>
+      <div class="recovery-codes" data-private="true">
+        <div class="recovery-code">ABCD-1234-EFGH</div>
+        <div class="recovery-code">IJKL-5678-MNOP</div>
+        <div class="recovery-code">QRST-9012-UVWX</div>
+        <div class="recovery-code">YZAB-3456-CDEF</div>
+        <div class="recovery-code">GHIJ-7890-KLMN</div>
+        <div class="recovery-code">OPQR-1234-STUV</div>
+        <div class="recovery-code">WXYZ-5678-ABCD</div>
+        <div class="recovery-code">EFGH-9012-IJKL</div>
+      </div>
+      <button class="btn btn-primary btn-sm mt-05" onclick="copyRecoveryCodes()">Copy All Codes</button>
+    </div>
+
+    <div class="card">
+      <h3>Authenticator QR Code</h3>
+      <p class="text-sm text-muted" style="margin-bottom: 0.5rem;">Scan with Google Authenticator, Authy, or similar:</p>
+      <div class="qr-code" data-private="true">
+        <div class="qr-pattern"></div>
+      </div>
+      <div class="code-block text-center" data-private="true" style="word-break: break-all;">
+        otpauth://totp/MyApp:john@email.com?secret=JBSWY3DPEHPK3PXP&issuer=MyApp
+      </div>
+      <p class="text-sm text-muted text-center mt-05">This QR code/secret must be masked</p>
+    </div>
+
+    <div class="card">
+      <h3>Wallet Seed Phrase</h3>
+      <p class="text-sm text-muted" style="margin-bottom: 0.5rem;">12/24 word recovery phrase (crypto wallets):</p>
+      <div class="code-block" data-private="true" style="line-height: 1.8;">
+        1. abandon  2. ability  3. able  4. about  5. above  6. absent<br>
+        7. absorb  8. abstract  9. absurd  10. abuse  11. access  12. accident
+      </div>
+      <div class="critical-box mt-05"><p>Seed phrases give FULL ACCESS to crypto wallets. NEVER capture these.</p></div>
+    </div>
+
+    <div class="card">
+      <h3>Email/SMS OTP Preview</h3>
+      <div style="background: #0f172a; border-radius: 8px; padding: 1rem;">
+        <div class="text-sm text-muted">From: security@myapp.com</div>
+        <div class="text-sm text-muted">Subject: Your verification code</div>
+        <div style="margin-top: 0.75rem; padding: 1rem; background: #1e293b; border-radius: 6px; color: white;">
+          Your verification code is: <span style="font-size: 1.5rem; font-weight: bold; color: #f87171; font-family: monospace;" data-private="true">847293</span>
+          <br><span class="text-sm text-muted">This code expires in 10 minutes.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Security Key Registration</h3>
+      <button class="btn btn-primary btn-sm" onclick="simulateSecurityKey()">Register Security Key</button>
+      <div id="securityKeyStatus" class="mt-05 info-box" style="display: none;">
+        <p>Security Key: YubiKey 5 NFC</p>
+        <p>Credential ID: <span style="color: #f87171;">cred_abc123xyz...</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- IDENTIFY MODAL -->
+  <div class="modal-overlay" id="identifyModalOverlay" onclick="closeIdentifyModal(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <h3 style="margin-bottom: var(--spacing-md);">Identify User</h3>
+      <p class="text-sm text-muted" style="margin-bottom: var(--spacing-md);">Enter your email to identify yourself.</p>
+      <form id="identifyForm" onsubmit="handleIdentifySubmit(event)">
+        <div class="form-group">
+          <label for="identifyName">Full Name <span style="color: var(--danger-color);">*</span></label>
+          <input type="text" id="identifyName" placeholder="John Doe" required>
+        </div>
+        <div class="form-group">
+          <label for="identifyEmail">Email Address <span style="color: var(--danger-color);">*</span></label>
+          <input type="email" id="identifyEmail" placeholder="john@example.com" required>
+        </div>
+        <div id="generatedIdPreview" style="display: none; margin-bottom: var(--spacing-md);">
+          <label class="text-sm">Generated User ID:</label>
+          <div class="code-block" id="generatedIdDisplay" style="margin-top: var(--spacing-xs);"></div>
+        </div>
+        <div style="display: flex; gap: var(--spacing-sm); justify-content: flex-end; margin-top: var(--spacing-md);">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="closeIdentifyModalBtn()">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Identify</button>
+        </div>
+      </form>
+      <div id="identifySuccess" style="display: none;">
+        <div class="success-box"><p><strong>Successfully identified!</strong></p></div>
+        <div style="margin-bottom: var(--spacing-md);"><label class="text-sm">User ID:</label><div class="code-block" id="successUserId"></div></div>
+        <div style="margin-bottom: var(--spacing-md);"><label class="text-sm">Name:</label><div class="code-block" id="successName"></div></div>
+        <div style="margin-bottom: var(--spacing-md);"><label class="text-sm">Email:</label><div class="code-block" id="successEmail"></div></div>
+        <button type="button" class="btn btn-primary btn-sm" onclick="closeIdentifyModalBtn()" style="width: 100%;">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graphics - Session Replay Test</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
+  <script src="js/tracker.js"></script>
+</head>
+<body data-page="graphics">
+  <header class="top-header">
+    <div class="top-header-left">
+      <a href="index.html" class="header-logo">
+        <div class="header-logo-icon">U</div>
+        <span class="header-logo-text">uzera</span>
+      </a>
+      <div class="header-page-title">
+        <span class="material-icons">security</span>
+        <span>Session Replay Test</span>
+      </div>
+    </div>
+    <div class="top-header-right">
+      <div class="user-profile" onclick="openIdentifyModal()">
+        <div class="user-avatar" id="userAvatarDisplay">TS</div>
+        <span class="user-name" id="userNameDisplay">Test User</span>
+        <span class="material-icons" style="font-size: 18px; color: var(--text-muted);">expand_more</span>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="pii.html">PII</a>
+      <a class="nav-link" href="auth.html">Auth</a>
+      <a class="nav-link" href="financial.html">Financial</a>
+      <a class="nav-link" href="sensitive.html">IDs</a>
+      <a class="nav-link" href="health.html">Health</a>
+      <a class="nav-link" href="inputs.html">Inputs</a>
+      <a class="nav-link" href="ui.html">UI</a>
+      <a class="nav-link" href="network.html">Network</a>
+      <a class="nav-link" href="pages.html">Pages</a>
+      <a class="nav-link" href="clicks.html">Clicks</a>
+      <a class="nav-link" href="custom.html">Custom</a>
+      <a class="nav-link" href="thirdparty.html">3rd Party</a>
+      <a class="nav-link" href="storage.html">Storage</a>
+      <a class="nav-link" href="clipboard.html">Clipboard</a>
+      <a class="nav-link" href="geolocation.html">Location</a>
+      <a class="nav-link" href="media.html">Media</a>
+      <a class="nav-link" href="autofill.html">Autofill</a>
+      <a class="nav-link" href="urldata.html">URL</a>
+      <a class="nav-link" href="international.html">Intl</a>
+      <a class="nav-link" href="recovery.html">2FA</a>
+      <a class="nav-link active" href="graphics.html">Graphics</a>
+      <a class="nav-link" href="errors.html">Errors</a>
+      <a class="nav-link" href="api.html">API</a>
+      <a class="nav-link" href="forms.html">Forms</a>
+    </div>
+  </nav>
+
+  <div class="page">
+    <h1>21. High Graphics & Images</h1>
+    <p class="page-desc"><span class="badge-warn">MASK</span> Images may contain sensitive visual data</p>
+
+    <div class="warning-box"><p>Images can contain faces, documents, screenshots with PII, and sensitive visual content.</p></div>
+
+    <div class="card">
+      <h3>Profile & Avatar Images</h3>
+      <p class="text-sm text-muted" style="margin-bottom: 0.75rem;">Profile photos reveal identity - consider masking</p>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end;">
+        <div style="text-align: center;" data-private="true">
+          <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto;">User</div>
+          <div class="text-sm mt-05">80x80</div>
+        </div>
+        <div style="text-align: center;" data-private="true">
+          <div style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); display: flex; align-items: center; justify-content: center; font-size: 3rem; margin: 0 auto; color: white;">User</div>
+          <div class="text-sm mt-05">120x120</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Canvas Drawing</h3>
+      <p class="text-sm text-muted" style="margin-bottom: 0.75rem;">Dynamic canvas with animations - may contain sensitive drawings</p>
+      <canvas id="animCanvas" width="400" height="200" style="width: 100%; background: #0f172a; border-radius: 8px; max-width: 400px;"></canvas>
+      <div class="flex gap-05 mt-05">
+        <button class="btn btn-primary btn-sm" onclick="startCanvasAnim()">Start Animation</button>
+        <button class="btn btn-danger btn-sm" onclick="stopCanvasAnim()">Stop</button>
+        <button class="btn btn-sm" style="background:#475569; color: white;" onclick="clearCanvas()">Clear</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Signature Canvas</h3>
+      <div class="critical-box"><p>Signature captures must be masked - legally sensitive</p></div>
+      <canvas id="signatureCanvas" width="400" height="150" style="width: 100%; max-width: 400px; background: #fff; border-radius: 8px; cursor: crosshair;" data-private="true"></canvas>
+      <div class="flex gap-05 mt-05">
+        <button class="btn btn-primary btn-sm" onclick="clearSignature()">Clear Signature</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>CSS Gradients & Effects</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 0.75rem;">
+        <div style="height: 80px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px;"></div>
+        <div style="height: 80px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 8px;"></div>
+        <div style="height: 80px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 8px;"></div>
+        <div style="height: 80px; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 8px;"></div>
+        <div style="height: 80px; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 8px;"></div>
+        <div style="height: 80px; background: conic-gradient(from 0deg, #6366f1, #a855f7, #ec4899, #f59e0b, #10b981, #6366f1); border-radius: 8px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IDENTIFY MODAL -->
+  <div class="modal-overlay" id="identifyModalOverlay" onclick="closeIdentifyModal(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <h3 style="margin-bottom: var(--spacing-md);">Identify User</h3>
+      <p class="text-sm text-muted" style="margin-bottom: var(--spacing-md);">Enter your email to identify yourself.</p>
+      <form id="identifyForm" onsubmit="handleIdentifySubmit(event)">
+        <div class="form-group">
+          <label for="identifyName">Full Name <span style="color: var(--danger-color);">*</span></label>
+          <input type="text" id="identifyName" placeholder="John Doe" required>
+        </div>
+        <div class="form-group">
+          <label for="identifyEmail">Email Address <span style="color: var(--danger-color);">*</span></label>
+          <input type="email" id="identifyEmail" placeholder="john@example.com" required>
+        </div>
+        <div id="generatedIdPreview" style="display: none; margin-bottom: var(--spacing-md);">
+          <label class="text-sm">Generated User ID:</label>
+          <div class="code-block" id="generatedIdDisplay" style="margin-top: var(--spacing-xs);"></div>
+        </div>
+        <div style="display: flex; gap: var(--spacing-sm); justify-content: flex-end; margin-top: var(--spacing-md);">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="closeIdentifyModalBtn()">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Identify</button>
+        </div>
+      </form>
+      <div id="identifySuccess" style="display: none;">
+        <div class="success-box"><p><strong>Successfully identified!</strong></p></div>
+        <div style="margin-bottom: var(--spacing-md);"><label class="text-sm">User ID:</label><div class="code-block" id="successUserId"></div></div>
+        <div style="margin-bottom: var(--spacing-md);"><label class="text-sm">Name:</label><div class="code-block" id="successName"></div></div>
+        <div style="margin-bottom: var(--spacing-md);"><label class="text-sm">Email:</label><div class="code-block" id="successEmail"></div></div>
+        <button type="button" class="btn btn-primary btn-sm" onclick="closeIdentifyModalBtn()" style="width: 100%;">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+  <script src="js/main.js"></script>
+</body>
+</html>

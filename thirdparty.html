@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3rd Party - Session Replay Test</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
+  <script src="js/tracker.js"></script>
+</head>
+<body data-page="thirdparty">
+  <header class="top-header">
+    <div class="top-header-left">
+      <a href="index.html" class="header-logo">
+        <div class="header-logo-icon">U</div>
+        <span class="header-logo-text">uzera</span>
+      </a>
+      <div class="header-page-title">
+        <span class="material-icons">security</span>
+        <span>Session Replay Test</span>
+      </div>
+    </div>
+    <div class="top-header-right">
+      <div class="user-profile" onclick="openIdentifyModal()">
+        <div class="user-avatar" id="userAvatarDisplay">TS</div>
+        <span class="user-name" id="userNameDisplay">Test User</span>
+        <span class="material-icons" style="font-size: 18px; color: var(--text-muted);">expand_more</span>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="pii.html">PII</a>
+      <a class="nav-link" href="auth.html">Auth</a>
+      <a class="nav-link" href="financial.html">Financial</a>
+      <a class="nav-link" href="sensitive.html">IDs</a>
+      <a class="nav-link" href="health.html">Health</a>
+      <a class="nav-link" href="inputs.html">Inputs</a>
+      <a class="nav-link" href="ui.html">UI</a>
+      <a class="nav-link" href="network.html">Network</a>
+      <a class="nav-link" href="pages.html">Pages</a>
+      <a class="nav-link" href="clicks.html">Clicks</a>
+      <a class="nav-link" href="custom.html">Custom</a>
+      <a class="nav-link active" href="thirdparty.html">3rd Party</a>
+      <a class="nav-link" href="storage.html">Storage</a>
+      <a class="nav-link" href="clipboard.html">Clipboard</a>
+      <a class="nav-link" href="geolocation.html">Location</a>
+      <a class="nav-link" href="media.html">Media</a>
+      <a class="nav-link" href="autofill.html">Autofill</a>
+      <a class="nav-link" href="urldata.html">URL</a>
+      <a class="nav-link" href="international.html">Intl</a>
+      <a class="nav-link" href="recovery.html">2FA</a>
+      <a class="nav-link" href="graphics.html">Graphics</a>
+      <a class="nav-link" href="errors.html">Errors</a>
+      <a class="nav-link" href="api.html">API</a>
+      <a class="nav-link" href="forms.html">Forms</a>
+    </div>
+  </nav>
+
+  <div class="page">
+    <h1>12. Third-Party Content</h1>
+    <p class="page-desc"><span class="badge-warn">MASK</span> Embedded iframes & widgets</p>
+
+    <div class="card">
+      <h3>Payment iFrames</h3>
+      <div class="flex gap-05 mb-05" style="flex-wrap: wrap;">
+        <button class="btn btn-primary btn-sm" onclick="loadIframe('stripe-iframe', 'https://stripe.com')">Stripe</button>
+        <button class="btn btn-primary btn-sm" onclick="loadIframe('paypal-iframe', 'https://paypal.com')">PayPal</button>
+        <button class="btn btn-sm" style="background:#475569; color: white;" onclick="closeIframe('stripe-iframe');closeIframe('paypal-iframe')">Close All</button>
+      </div>
+      <div id="stripe-iframe" class="iframe-wrapper" style="display:none;"><div class="iframe-header"><span>Stripe</span><button class="iframe-close" onclick="closeIframe('stripe-iframe')">X</button></div><iframe src="about:blank"></iframe></div>
+      <div id="paypal-iframe" class="iframe-wrapper" style="display:none;"><div class="iframe-header"><span>PayPal</span><button class="iframe-close" onclick="closeIframe('paypal-iframe')">X</button></div><iframe src="about:blank"></iframe></div>
+    </div>
+
+    <div class="card">
+      <h3>OAuth iFrames</h3>
+      <div class="flex gap-05" style="flex-wrap: wrap;">
+        <button class="btn btn-primary btn-sm" onclick="loadIframe('google-iframe', 'https://accounts.google.com')">Google</button>
+        <button class="btn btn-primary btn-sm" onclick="loadIframe('github-iframe', 'https://github.com/login')">GitHub</button>
+      </div>
+      <div id="google-iframe" class="iframe-wrapper" style="display:none;"><div class="iframe-header"><span>Google OAuth</span><button class="iframe-close" onclick="closeIframe('google-iframe')">X</button></div><iframe src="about:blank"></iframe></div>
+      <div id="github-iframe" class="iframe-wrapper" style="display:none;"><div class="iframe-header"><span>GitHub OAuth</span><button class="iframe-close" onclick="closeIframe('github-iframe')">X</button></div><iframe src="about:blank"></iframe></div>
+    </div>
+
+    <div class="card">
+      <h3>Maps & Video</h3>
+      <div class="flex gap-05" style="flex-wrap: wrap;">
+        <button class="btn btn-primary btn-sm" onclick="loadIframe('map-iframe', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.1!2d-73.98!3d40.75')">Google Maps</button>
+        <button class="btn btn-primary btn-sm" onclick="loadIframe('yt-iframe', 'https://www.youtube.com/embed/dQw4w9WgXcQ')">YouTube</button>
+      </div>
+      <div id="map-iframe" class="iframe-wrapper" style="display:none;"><div class="iframe-header"><span>Google Maps</span><button class="iframe-close" onclick="closeIframe('map-iframe')">X</button></div><iframe src="about:blank"></iframe></div>
+      <div id="yt-iframe" class="iframe-wrapper" style="display:none;"><div class="iframe-header"><span>YouTube</span><button class="iframe-close" onclick="closeIframe('yt-iframe')">X</button></div><iframe src="about:blank" allow="accelerometer; autoplay; encrypted-media"></iframe></div>
+    </div>
+  </div>
+
+  <!-- IDENTIFY MODAL -->
+  <div class="modal-overlay" id="identifyModalOverlay" onclick="closeIdentifyModal(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <h3 style="margin-bottom: var(--spacing-md);">Identify User</h3>
+      <p class="text-sm text-muted" style="margin-bottom: var(--spacing-md);">Enter your email to identify yourself.</p>
+      <form id="identifyForm" onsubmit="handleIdentifySubmit(event)">
+        <div class="form-group">
+          <label for="identifyName">Full Name <span style="color: var(--danger-color);">*</span></label>
+          <input type="text" id="identifyName" placeholder="John Doe" required>
+        </div>
+        <div class="form-group">
+          <label for="identifyEmail">Email Address <span style="color: var(--danger-color);">*</span></label>
+          <input type="email" id="identifyEmail" placeholder="john@example.com" required>
+        </div>
+        <div id="generatedIdPreview" style="display: none; margin-bottom: var(--spacing-md);">
+          <label class="text-sm">Generated User ID:</label>
+          <div class="code-block" id="generatedIdDisplay" style="margin-top: var(--spacing-xs);"></div>
+        </div>
+        <div style="display: flex; gap: var(--spacing-sm); justify-content: flex-end; margin-top: var(--spacing-md);">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="closeIdentifyModalBtn()">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Identify</button>
+        </div>
+      </form>
+      <div id="identifySuccess" style="display: none;">
+        <div class="success-box"><p><strong>Successfully identified!</strong></p></div>
+        <div style="margin-bottom: var(--spacing-md);"><label class="text-sm">User ID:</label><div class="code-block" id="successUserId"></div></div>
+        <div style="margin-bottom: var(--spacing-md);"><label class="text-sm">Name:</label><div class="code-block" id="successName"></div></div>
+        <div style="margin-bottom: var(--spacing-md);"><label class="text-sm">Email:</label><div class="code-block" id="successEmail"></div></div>
+        <button type="button" class="btn btn-primary btn-sm" onclick="closeIdentifyModalBtn()" style="width: 100%;">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+  <script src="js/main.js"></script>
+</body>
+</html>
