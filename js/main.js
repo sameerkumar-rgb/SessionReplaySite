@@ -1,3 +1,53 @@
+// Global Error Tracking (persists in localStorage)
+(function() {
+  // Helper to get/update error counts in localStorage
+  function getErrorCounts() {
+    const stored = localStorage.getItem('errorCounts');
+    if (stored) return JSON.parse(stored);
+    return { jsErrors: 0, networkErrors: 0, serverErrors: 0, clientErrors: 0, resourceErrors: 0 };
+  }
+
+  function incrementError(type) {
+    const counts = getErrorCounts();
+    if (counts[type] !== undefined) {
+      counts[type]++;
+      localStorage.setItem('errorCounts', JSON.stringify(counts));
+    }
+  }
+
+  // Track JavaScript errors globally
+  window.addEventListener('error', function(event) {
+    incrementError('jsErrors');
+    console.log('[Error Tracked] JS Error:', event.message);
+  });
+
+  // Track unhandled promise rejections
+  window.addEventListener('unhandledrejection', function(event) {
+    incrementError('jsErrors');
+    console.log('[Error Tracked] Unhandled Rejection:', event.reason);
+  });
+
+  // Track resource loading errors (images, scripts, etc.)
+  window.addEventListener('error', function(event) {
+    if (event.target && (event.target.tagName === 'IMG' || event.target.tagName === 'SCRIPT' || event.target.tagName === 'LINK')) {
+      incrementError('resourceErrors');
+      console.log('[Error Tracked] Resource Error:', event.target.src || event.target.href);
+    }
+  }, true);
+
+  // Make incrementError available globally for manual tracking
+  window.trackGlobalError = function(type) {
+    const typeMap = {
+      'js': 'jsErrors',
+      'network': 'networkErrors',
+      'server': 'serverErrors',
+      'client': 'clientErrors',
+      'resource': 'resourceErrors'
+    };
+    incrementError(typeMap[type] || type);
+  };
+})();
+
 // Toast
 function showToast(msg, type = 'info') {
   const c = document.getElementById('toastContainer');
@@ -125,13 +175,12 @@ function initUserSession() {
     const name = session.name || session.email.split('@')[0];
     updateUserDisplay(name, session.email, session.userId);
     if (typeof uzera !== 'undefined' && uzera.identify) {
-      uzera.identify({
-        id: session.userId,
-        userData: {
+      uzera.identify(
+       session.userId,
+        {
           name: name,
           email: session.email,
-        },
-      });
+        });
     } else {
       console.log('Session restored - uzera.identify({ id: "' + session.userId + '", userData: { name: "' + name + '", email: "' + session.email + '" } });');
     }
@@ -148,13 +197,12 @@ function handleIdentifySubmit(e) {
   saveUserSession(name, email, userId);
 
   if (typeof uzera !== 'undefined' && uzera.identify) {
-    uzera.identify({
-      id: userId,
-      userData: {
+    uzera.identify(
+       userId,
+   {
         name: name,
         email: email,
-      },
-    });
+      });
   } else {
     console.log('uzera.identify({ id: "' + userId + '", userData: { name: "' + name + '", email: "' + email + '" } });');
   }
